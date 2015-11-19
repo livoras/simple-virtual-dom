@@ -1,2 +1,2 @@
 # simple-virtual-dom
-Basic virtual-dom algorithm
+Basic virtual-dom algorithm.

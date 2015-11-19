@@ -1,0 +1,25 @@
+{
+  "name": "simple-virtual-dom",
+  "version": "0.1.0",
+  "description": "Basic virtual dom algorithm",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livoras/simple-virtual-dom.git"
+  },
+  "keywords": [
+    "virtual-dom"
+  ],
+  "author": "Livoras",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/livoras/simple-virtual-dom/issues"
+  },
+  "homepage": "https://github.com/livoras/simple-virtual-dom#readme",
+  "dependencies": {
+    "list-diff2": "^0.1.2"
+  }
+}
