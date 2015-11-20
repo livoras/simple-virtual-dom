@@ -4,7 +4,8 @@
   "description": "Basic virtual dom algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "standard && npm run cover",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "dev": "nodemon --exec mocha"
   },
   "repository": {
@@ -22,5 +23,10 @@
   "homepage": "https://github.com/livoras/simple-virtual-dom#readme",
   "dependencies": {
     "list-diff2": "^0.1.2"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "codecov.io": "^0.1.6",
+    "mocha": "^2.3.4"
   }
 }
