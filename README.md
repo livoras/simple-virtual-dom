@@ -8,7 +8,7 @@ simple-virtual-dom
 
 Basic virtual-dom algorithm. 
 
-Just for playing and learning. Never use it for real-life project.
+Just for playing and learning. Never use it for real-life projects.
 
 ## License
 
