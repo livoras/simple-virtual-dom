@@ -6,7 +6,7 @@ var el = require('../lib/element')
 chai.should()
 
 describe('Test for Element', function () {
-  it('Element count with the sum of its children\'s count', function () {
+  it('Element\'s count is the sum of its children\'s count', function () {
     var root = el('ul', {name: 'jerry'}, [
       el('li', null, [el('span')]),
       el('li', null, [el('span')]),

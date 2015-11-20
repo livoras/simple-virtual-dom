@@ -4,9 +4,9 @@
   "description": "Basic virtual dom algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "standard && npm run cover",
+    "test": "./test.sh",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "dev": "nodemon --exec mocha"
+    "dev": "nodemon --watch lib --watch test --watch index.js --exec ./test.sh"
   },
   "repository": {
     "type": "git",
