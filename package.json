@@ -4,7 +4,8 @@
   "description": "Basic virtual dom algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "dev": "nodemon --exec mocha"
   },
   "repository": {
     "type": "git",
