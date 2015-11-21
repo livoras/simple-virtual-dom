@@ -27,6 +27,8 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "codecov.io": "^0.1.6",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
   }
 }
