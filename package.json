@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./test.sh",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "dev": "nodemon --watch lib --watch test --watch index.js --exec ./test.sh"
+    "dev": "nodemon --watch lib --watch test --watch index.js --exec ./test.sh",
+    "build": "browserify simple-virtual-dom.js -o dist/bundle.js"
   },
   "repository": {
     "type": "git",

@@ -4,7 +4,7 @@ var el = require('../../lib/element')
 var patch = require('../../lib/patch')
 var diff = require('../../lib/diff')
 
-casper.test.begin('Appy patch to real dom', 4, function (test) {
+casper.test.begin('Appy patch to real dom', 5, function (test) {
   casper.start('test/casper/index.html', function () {
     test.assertTitle('Page Test', 'Title matched')
   })
@@ -63,6 +63,27 @@ casper.test.begin('Appy patch to real dom', 4, function (test) {
     var realDOM2 = root2.render()
     test.assertEqual(realDOM.childNodes.length, realDOM2.childNodes.length, 'Has\' the same amount of childNodes')
     test.assertEqual(realDOM.innerHTML, root2.render().innerHTML, 'Reording keyed items')
+  })
+
+  casper.then(function () {
+    var color = 'blue'
+    var count = 0
+    var root1 = el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li')])
+    ])
+
+    var root2 = el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li'), el('li')])
+    ])
+
+    var dom = root1.render()
+    var patches = diff(root1, root2)
+    patch(dom, patches)
+    test.assertEqual(dom.innerHTML, root2.render().innerHTML, 'Complicated dom')
   })
 
   casper.run(function () {

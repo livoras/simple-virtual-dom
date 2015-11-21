@@ -36,8 +36,8 @@ describe('Test diff algorithm', function () {
     patches[4][0].type.should.be.equal(patch.PROPS)
     patches[4][0].props.should.be.deep.equal({ style: void 555, class: 'fuck' })
 
-    patches[5][0].type.should.be.equal(patch.PROPS)
-    patches[5][0].props.should.be.deep.equal({ style: 'yellow green' })
+    patches[6][0].type.should.be.equal(patch.PROPS)
+    patches[6][0].props.should.be.deep.equal({ style: 'yellow green' })
   })
 
   it('Node removing', function () {
@@ -105,5 +105,24 @@ describe('Test diff algorithm', function () {
     var diffs = diff(oldRoot, newRoot)
     diffs[7][0].type.should.be.equal(patch.TEXT)
     diffs[10][0].type.should.be.equal(patch.TEXT)
+  })
+
+  it('Diff complicated dom', function () {
+    var color = 'blue'
+    var count = 0
+    var root1 = el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li')])
+    ])
+
+    var root2 = el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li'), el('li')])
+    ])
+
+    var patches = diff(root1, root2)
+    patches[5].should.be.an.Object
   })
 })

@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>simple virtual dom example</title>
+  </head>
+
+  <body>
+  </body>
+
+  <script src="../dist/bundle.js"></script>
+  <script>
+
+  var el = svd.el
+  var diff = svd.diff
+  var patch = svd.patch
+
+  var count = 0
+
+  function renderTree () {
+    count++
+
+    var items = []
+    var color = (count % 2 === 0)
+      ? 'blue'
+      : 'red'
+
+    for (var i = 0; i < count; i++) {
+      items.push(el('li', ['Item #' + i]))
+    }
+
+    return el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', items)
+    ])
+  }
+
+  var tree = renderTree()
+  var root = tree.render()
+  document.body.appendChild(root)
+
+  setInterval(function () {
+    var newTree = renderTree()
+    var patches = diff(tree, newTree)
+    console.log(patches)
+    patch(root, patches)
+
+    tree = newTree
+  }, 1000)
+
+  </script>
+
+</html>
