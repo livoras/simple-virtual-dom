@@ -2,7 +2,7 @@
 
 var el = require('../../lib/element')
 
-casper.test.begin('run', 9, function (test) {
+casper.test.begin('Render DOM', 9, function (test) {
   casper.start('test/casper/index.html', function () {
     test.assertTitle('Page Test', 'Title matched')
   })

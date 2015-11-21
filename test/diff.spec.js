@@ -62,7 +62,7 @@ describe('Test diff algorithm', function () {
   })
 
   it('Reordering with keyed items', function () {
-    var oldRoot = el('ul', [
+    var oldRoot = el('ul', {id: 'list'}, [
       el('li', {key: 'a'}),
       el('li', {key: 'b'}),
       el('li', {key: 'c', style: 'shit'}),
@@ -70,7 +70,7 @@ describe('Test diff algorithm', function () {
       el('li', {key: 'e'})
     ])
 
-    var newRoot = el('ul', [
+    var newRoot = el('ul', {id: 'lsit'}, [
       el('li', {key: 'a'}),
       el('li', {key: 'c'}),
       el('li', {key: 'e'}),
@@ -79,14 +79,16 @@ describe('Test diff algorithm', function () {
     ])
 
     var diffs = diff(oldRoot, newRoot)
+    diffs[0].length.should.be.equal(2)
     diffs[2][0].type.should.equal(patch.PROPS)
     diffs[3][0].type.should.equal(patch.PROPS)
 
     diffs[2][0].props.should.deep.equal({name: 'Jerry'})
     diffs[3][0].props.should.deep.equal({style: void 555})
 
-    diffs[0][0].type.should.equal(patch.REORDER)
-    diffs[0][0].moves.length.should.equal(4)
+    diffs[0][0].type.should.equal(patch.PROPS)
+    diffs[0][1].type.should.equal(patch.REORDER)
+    diffs[0][1].moves.length.should.equal(4)
   })
 
   it('Text replacing', function () {
