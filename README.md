@@ -11,6 +11,16 @@ Basic virtual-dom algorithm. It has only ~400 lines of code, including very basi
 
 Just for playing and learning. Never use it for real-life projects.
 
+### Install
+
+npm:
+
+    $ npm install simple-virtual-dom --save
+
+checkout the `bundle.js` in `dist`:
+
+    <script src="simple-virtual-dom/dist/bundle.js"></script>
+
 ## Usage
 
 ```javascript
