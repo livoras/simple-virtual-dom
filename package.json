@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/livoras/simple-virtual-dom#readme",
   "dependencies": {
-    "list-diff2": "^0.1.3"
+    "list-diff2": "^0.1.4"
   },
   "devDependencies": {
     "chai": "^3.4.1",

@@ -8,7 +8,7 @@ var sinonChai = require('sinon-chai')
 chai.use(sinonChai)
 chai.should()
 
-describe('Test for Element', function () {
+describe('Test Element', function () {
   global.document = {}
 
   it('Element\'s count is the sum of its children\'s count', function () {
