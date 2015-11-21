@@ -17,7 +17,7 @@ npm:
 
     $ npm install simple-virtual-dom --save
 
-checkout the `bundle.js` in `dist`:
+or checkout the `bundle.js` in `dist`:
 
     <script src="simple-virtual-dom/dist/bundle.js"></script>
 
