@@ -1,4 +1,4 @@
-/* global describe, it*/
+/* global describe, it */
 
 var el = require('../lib/element')
 
@@ -9,8 +9,6 @@ chai.use(sinonChai)
 chai.should()
 
 describe('Test Element', function () {
-  global.document = {}
-
   it('Element\'s count is the sum of its children\'s count', function () {
     var root = el('ul', {name: 'jerry'}, [
       el('li', null, [el('span')]),
@@ -46,6 +44,9 @@ describe('Test Element', function () {
   })
 
   it('Calling render method', function () {
+    var oldDocument = global.document
+    global.document = {}
+
     var props = {style: 'color: red'}
     var root = el('ul', props, [
       el('li'),
@@ -64,6 +65,7 @@ describe('Test Element', function () {
     spy1.should.have.callCount(4)
     spy2.should.have.been.calledWith('Fuck')
     spy3.should.have.callCount(4)
+    global.document = oldDocument
   })
 
   it('Using `count` to get DFS index is right', function () {
