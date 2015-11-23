@@ -150,4 +150,66 @@ describe('Test patch fucntion', function () {
     dom = document.getElementById('content')
     dom.innerHTML.should.be.equal(root2.render().innerHTML)
   })
+
+  it('Using patches don\'t exist, should throw error', function () {
+    var root = el('div', ['good'])
+    var dom = root.render()
+    try {
+      patch(dom, {
+        1: [{type: 6}, {}]
+      })
+    } catch (e) {
+      e.toString().should.be.equal('Error: Unknown patch type 6')
+    }
+  })
+
+  it('When child node is not the same, don\'t remove it', function () {
+    var root = el('ul', {id: 'content2'}, [
+      el('li', {key: 'a'}, ['Item 1']),
+      el('li', {key: 'b'}, ['Item 2']),
+      el('li', {key: 'c'}, ['Item 3']),
+      el('li', {key: 'd'}, ['Item 4']),
+      el('li', {key: 'e'}, ['Item 5'])
+    ])
+
+    var root2 = el('ul', {id: 'content2'}, [
+      el('li', {key: 'a'}, ['Item 1']),
+      el('li', {key: 'd'}, ['Item 4']),
+      el('li', {key: 'b'}, ['Item 2']),
+      el('li', {key: 'c'}, ['Item 3']),
+      el('li', {key: 'e'}, ['Item 5'])
+    ])
+
+    var dom = root.render()
+    var spy = sinon.spy(dom, 'removeChild')
+    dom.removeChild(dom.childNodes[3])
+    var patches = diff(root, root2)
+
+    patch(dom, patches)
+    spy.should.have.been.called.once
+  })
+
+  it('When child nodes are the same, remove it', function () {
+    var root = el('ul', {id: 'content2'}, [
+      el('li', {key: 'a'}, ['Item 1']),
+      el('li', {key: 'b'}, ['Item 2']),
+      el('li', {key: 'c'}, ['Item 3']),
+      el('li', {key: 'd'}, ['Item 4']),
+      el('li', {key: 'e'}, ['Item 5'])
+    ])
+
+    var root2 = el('ul', {id: 'content2'}, [
+      el('li', {key: 'a'}, ['Item 1']),
+      el('li', {key: 'b'}, ['Item 2']),
+      el('li', {key: 'c'}, ['Item 3']),
+      el('li', {key: 'e'}, ['Item 5'])
+    ])
+
+    var dom = root.render()
+    var spy = sinon.spy(dom, 'removeChild')
+    var patches = diff(root, root2)
+
+    patch(dom, patches)
+    spy.should.have.been.called.once
+  })
 })
