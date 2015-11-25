@@ -45,6 +45,7 @@
       el('table', [
         el('thead', [
           el('tr', [
+            el('th', ['UID']),
             el('th', ['NAME']),
             el('th', {class: 'sort-head', sortKey: 'age'}, ['AGE']),
             el('th', {class: 'sort-head', sortKey: 'reputation'}, ['REPUTATION'])
@@ -58,6 +59,7 @@
   function renderRows() {
     return list.map(function (item) {
       return el('tr', {key: item.uid}, [
+        el('td', [item.uid]),
         el('td', [item.username]),
         el('td', [item.age]),
         el('td', [item.reputation]),
@@ -84,8 +86,6 @@
       var newTree = renderTree()
       var patches = diff(tree, newTree)
       patch(dom, patches)
-      console.log(tree, newTree)
-      console.log(patches)
       tree = newTree
     })
   }

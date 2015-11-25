@@ -20,8 +20,7 @@ function dfsWalk (oldNode, newNode, index, patches) {
 
   // node is removed
   if (newNode === null) {
-    // will be removed when perform reordering
-    // currentPatch.push({type: patch.REMOVE})
+    // will be removed when perform reordering, so has no needs to do anthings in here
   // textNode content replacing
   } else if (_.isString(oldNode) && _.isString(newNode)) {
     if (newNode !== oldNode) {
@@ -124,11 +123,11 @@ function Element (tagName, props, children) {
 
   if (_.isArray(props)) {
     children = props
-    props = void 666
+    props = {}
   }
 
   this.tagName = tagName
-  this.props = props
+  this.props = props || {}
   this.children = children || []
   this.key = props
     ? props.key
@@ -257,7 +256,7 @@ function reorderChildren (node, moves) {
       var insertNode = maps[move.item.key]
         ? maps[move.item.key] // reuse old item
         : move.item.render()
-      staticNodeList.splice(index, 1, insertNode)
+      staticNodeList.splice(index, 0, insertNode)
       node.insertBefore(insertNode, node.childNodes[index] || null)
     }
   })
