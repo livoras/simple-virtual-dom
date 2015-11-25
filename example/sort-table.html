@@ -1,0 +1,105 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>simple virtual dom example</title>
+    <style>
+    thead {color:green;}
+    tbody {color:blue;}
+
+    table, th, td {
+      border: 1px solid black;
+    }
+    </style>
+  </head>
+
+  <body>
+  </body>
+
+  <script src="../dist/bundle.js"></script>
+  <script>
+
+  var el = svd.el
+  var diff = svd.diff
+  var patch = svd.patch
+
+  var AGE = 'age'
+  var REPUTATION = 'reputation'
+
+  var sortKey = AGE
+  var sortType = 1
+
+  var list = [
+    {username: 'Jerry', age: 12, reputation: 200, uid: 'user1'},
+    {username: 'Pony', age: 33, reputation: 3000, uid: 'user4'},
+    {username: 'Lucy', age: 21, reputation: 99, uid: 'user2'},
+    {username: 'Tomy', age: 20, reputation:20, uid: 'user3'},
+    {username: 'Funky', age: 49, reputation: 521, uid: 'user5'}
+  ]
+
+  // render table
+  function renderTree () {
+    var rows = renderRows()
+    return el('div', [
+      el('b', ['sortKey: ' + sortKey, ' | sortType: ' + (sortType ? 'up' : 'down')]),
+      el('table', [
+        el('thead', [
+          el('tr', [
+            el('th', ['NAME']),
+            el('th', {class: 'sort-head', sortKey: 'age'}, ['AGE']),
+            el('th', {class: 'sort-head', sortKey: 'reputation'}, ['REPUTATION'])
+          ])
+        ]),
+        el('tbody', rows)
+      ])
+    ])
+  }
+
+  function renderRows() {
+    return list.map(function (item) {
+      return el('tr', {key: item.uid}, [
+        el('td', [item.username]),
+        el('td', [item.age]),
+        el('td', [item.reputation]),
+      ])
+    })
+  }
+
+  var tree = renderTree()
+  var dom = tree.render()
+  document.body.appendChild(dom)
+
+  var sortTriggers = dom.querySelectorAll('.sort-head')
+  for (var i = 0, len = sortTriggers.length; i < len; i++) {
+    var trigger =sortTriggers[i]
+    trigger.addEventListener('click', function (event) {
+      var key = event.target.getAttribute('sortKey')
+      if (key === sortKey) {
+        sortType = !sortType
+      } else {
+        sortKey = key
+        sortType = 1
+      }
+      sortData()
+      var newTree = renderTree()
+      var patches = diff(tree, newTree)
+      patch(dom, patches)
+      console.log(tree, newTree)
+      console.log(patches)
+      tree = newTree
+    })
+  }
+
+  function sortData() {
+    list.sort(function (a, b) {
+      if (sortType) {
+        return a[sortKey] - b[sortKey]
+      } else {
+        return b[sortKey] - a[sortKey]
+      }
+    })
+  }
+
+  </script>
+
+</html>
