@@ -1,6 +1,6 @@
 {
   "name": "simple-virtual-dom",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Basic virtual dom algorithm",
   "main": "index.js",
   "scripts": {
