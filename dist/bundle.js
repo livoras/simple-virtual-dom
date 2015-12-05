@@ -59,7 +59,7 @@ function diffChildren (oldChildren, newChildren, index, patches, currentPatch) {
 
   var leftNode = null
   var currentNodeIndex = index
-  oldChildren.forEach(function (child, i) {
+  _.each(oldChildren, function (child, i) {
     var newChild = newChildren[i]
     currentNodeIndex = (leftNode && leftNode.count)
       ? currentNodeIndex + leftNode.count + 1
@@ -135,7 +135,7 @@ function Element (tagName, props, children) {
 
   var count = 0
 
-  this.children.forEach(function (child, i) {
+  _.each(this.children, function (child, i) {
     if (child instanceof Element) {
       count += child.count
     } else {
@@ -161,7 +161,7 @@ Element.prototype.render = function () {
 
   var children = this.children || []
 
-  children.forEach(function (child) {
+  _.each(children, function (child) {
     var childEl = (child instanceof Element)
       ? child.render()
       : document.createTextNode(child)
@@ -174,6 +174,8 @@ Element.prototype.render = function () {
 module.exports = Element
 
 },{"./util":5}],4:[function(require,module,exports){
+var _ = require('./util')
+
 var REPLACE = 0
 var REORDER = 1
 var PROPS = 2
@@ -202,7 +204,7 @@ function dfsWalk (node, walker, patches) {
 }
 
 function applyPatches (node, currentPatches) {
-  currentPatches.forEach(function (currentPatch) {
+  _.each(currentPatches, function (currentPatch) {
     switch (currentPatch.type) {
       case REPLACE:
         node.parentNode.replaceChild(currentPatch.node.render(), node)
@@ -214,7 +216,12 @@ function applyPatches (node, currentPatches) {
         setProps(node, currentPatch.props)
         break
       case TEXT:
-        node.textContent = currentPatch.content
+        if (node.textContent) {
+          node.textContent = currentPatch.content
+        } else {
+          // fuck ie
+          node.nodeValue = currentPatch.content
+        }
         break
       default:
         throw new Error('Unknown patch type ' + currentPatch.type)
@@ -233,10 +240,10 @@ function setProps (node, props) {
 }
 
 function reorderChildren (node, moves) {
-  var staticNodeList = [].slice.call(node.childNodes, 0)
+  var staticNodeList = _.toArray(node.childNodes)
   var maps = {}
 
-  staticNodeList.forEach(function (node) {
+  _.each(staticNodeList, function (node) {
     if (node.nodeType === 1) {
       var key = node.getAttribute('key')
       if (key) {
@@ -245,7 +252,7 @@ function reorderChildren (node, moves) {
     }
   })
 
-  moves.forEach(function (move) {
+  _.each(moves, function (move) {
     var index = move.index
     if (move.type === 0) { // remove item
       if (staticNodeList[index] === node.childNodes[index]) { // maybe have been removed for inserting
@@ -269,7 +276,7 @@ patch.TEXT = TEXT
 
 module.exports = patch
 
-},{}],5:[function(require,module,exports){
+},{"./util":5}],5:[function(require,module,exports){
 var _ = exports
 
 _.type = function (obj) {
@@ -282,6 +289,26 @@ _.isArray = function isArray (list) {
 
 _.isString = function isString (list) {
   return _.type(list) === 'String'
+}
+
+_.each = function each (array, fn) {
+  for (var i = 0, len = array.length; i < len; i++) {
+    fn(array[i], i)
+  }
+}
+
+_.toArray = function toArray (listLike) {
+  if (!listLike) {
+    return []
+  }
+
+  var list = []
+
+  for (var i = 0, len = listLike.length; i < len; i++) {
+    list.push(listLike[i])
+  }
+
+  return list
 }
 
 },{}],6:[function(require,module,exports){
