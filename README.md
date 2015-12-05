@@ -11,7 +11,7 @@ Basic virtual-dom algorithm. It has only ~400 lines of code, including very basi
 
 Just for playing and learning. Never use it for real-life projects.
 
-### Install
+## Install
 
 npm:
 
