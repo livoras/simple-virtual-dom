@@ -234,7 +234,12 @@ function setProps (node, props) {
     if (props[key] === void 666) {
       node.removeAttribute(key)
     } else {
-      node.setAttribute(key, props[key])
+      // for setting IE' style attr as string is not working!
+      if (key === 'style') {
+        node.style.cssText = props[key]
+      } else {
+        node.setAttribute(key, props[key])
+      }
     }
   }
 }
