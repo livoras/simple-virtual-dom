@@ -47,8 +47,8 @@
           el('tr', [
             el('th', ['UID']),
             el('th', ['NAME']),
-            el('th', {class: 'sort-head', sortKey: 'age'}, ['AGE']),
-            el('th', {class: 'sort-head', sortKey: 'reputation'}, ['REPUTATION'])
+            el('th', {'id': 'sort-head1', sortKey: 'age'}, ['AGE']),
+            el('th', {'id': 'sort-head2', sortKey: 'reputation'}, ['REPUTATION'])
           ])
         ]),
         el('tbody', rows)
@@ -57,37 +57,47 @@
   }
 
   function renderRows() {
-    return list.map(function (item) {
-      return el('tr', {key: item.uid}, [
-        el('td', [item.uid]),
-        el('td', [item.username]),
-        el('td', [item.age]),
-        el('td', [item.reputation]),
-      ])
-    })
+    var rows = []
+    for (var i = 0, len = list.length; i < len; i++) {
+      var item = list[i]
+      rows.push(
+        el('tr', {key: item.uid}, [
+          el('td', [item.uid]),
+          el('td', [item.username]),
+          el('td', [item.age]),
+          el('td', [item.reputation]),
+        ])
+      )
+    }
+    return rows
   }
 
   var tree = renderTree()
   var dom = tree.render()
   document.body.appendChild(dom)
 
-  var sortTriggers = dom.querySelectorAll('.sort-head')
+  var sortTriggers = [
+    document.getElementById('sort-head1'),
+    document.getElementById('sort-head2')
+  ]
   for (var i = 0, len = sortTriggers.length; i < len; i++) {
-    var trigger =sortTriggers[i]
-    trigger.addEventListener('click', function (event) {
-      var key = event.target.getAttribute('sortKey')
-      if (key === sortKey) {
-        sortType = !sortType
-      } else {
-        sortKey = key
-        sortType = 1
+    var trigger = sortTriggers[i];
+    (function(_trigger){
+      _trigger.onclick = function () {
+        var key = _trigger.getAttribute('sortKey')
+        if (key === sortKey) {
+          sortType = !sortType
+        } else {
+          sortKey = key
+          sortType = 1
+        }
+        sortData()
+        var newTree = renderTree()
+        var patches = diff(tree, newTree)
+        patch(dom, patches)
+        tree = newTree
       }
-      sortData()
-      var newTree = renderTree()
-      var patches = diff(tree, newTree)
-      patch(dom, patches)
-      tree = newTree
-    })
+    })(trigger)
   }
 
   function sortData() {
