@@ -159,6 +159,11 @@ Element.prototype.render = function () {
     el.setAttribute(propName, propValue)
   }
 
+  if (props.style) {
+    // Using cssText to fix IE' style
+    el.style.cssText = '' + props.style
+  }
+
   var children = this.children || []
 
   _.each(children, function (child) {
@@ -267,7 +272,9 @@ function reorderChildren (node, moves) {
     } else if (move.type === 1) { // insert item
       var insertNode = maps[move.item.key]
         ? maps[move.item.key] // reuse old item
-        : move.item.render()
+        : (typeof move.item === 'object')
+            ? move.item.render()
+            : document.createTextNode(move.item)
       staticNodeList.splice(index, 0, insertNode)
       node.insertBefore(insertNode, node.childNodes[index] || null)
     }
