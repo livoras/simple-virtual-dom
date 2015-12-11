@@ -22,7 +22,7 @@ casper.test.begin('Render DOM', 9, function (test) {
 
     test.assertEqual(root.count, 5, 'Element\'count should be rigth')
     test.assertEqual(rootEl.getAttribute('data-index'), '0', 'Should generate index 0')
-    test.assertEqual(rootEl.getAttribute('style'), 'color: red', 'Should generate style')
+    test.assertEqual(rootEl.style.cssText, 'color: red; ', 'Should generate style')
     test.assertEqual(rootEl.style.color, 'red', 'Should have real color red')
 
     test.assertEqual(rootEl.childNodes.length, 5, 'Children elements should be created, too')

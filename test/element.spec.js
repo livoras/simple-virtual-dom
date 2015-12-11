@@ -58,7 +58,8 @@ describe('Test Element', function () {
     var spy2 = document.createTextNode = sinon.spy()
     var spy1 = document.createElement = sinon.stub().returns({
       setAttribute: spy0,
-      appendChild: spy3
+      appendChild: spy3,
+      style: {}
     })
     root.render()
     spy0.should.have.calledWith('style', 'color: red')
