@@ -156,12 +156,7 @@ Element.prototype.render = function () {
 
   for (var propName in props) {
     var propValue = props[propName]
-    el.setAttribute(propName, propValue)
-  }
-
-  if (props.style) {
-    // Using cssText to fix IE' style
-    el.style.cssText = '' + props.style
+    _.setAttr(el, propName, propValue)
   }
 
   var children = this.children || []
@@ -239,12 +234,8 @@ function setProps (node, props) {
     if (props[key] === void 666) {
       node.removeAttribute(key)
     } else {
-      // for setting IE' style attr as string is not working!
-      if (key === 'style') {
-        node.style.cssText = props[key]
-      } else {
-        node.setAttribute(key, props[key])
-      }
+      var value = props[key]
+      _.setAttr(node, key, value)
     }
   }
 }
@@ -321,6 +312,29 @@ _.toArray = function toArray (listLike) {
   }
 
   return list
+}
+
+_.setAttr = function setAttr (node, key, value) {
+  switch (key) {
+    case 'style':
+      node.style.cssText = value
+      break
+    case 'value':
+      var tagName = node.tagName || ''
+      tagName = tagName.toLowerCase()
+      if (
+        tagName === 'input' || tagName === 'textarea'
+      ) {
+        node.value = value
+      } else {
+        // if it is not a input or textarea, use `setAttribute` to set
+        node.setAttribute(key, value)
+      }
+      break
+    default:
+      node.setAttribute(key, value)
+      break
+  }
 }
 
 },{}],6:[function(require,module,exports){

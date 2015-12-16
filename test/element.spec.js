@@ -47,7 +47,7 @@ describe('Test Element', function () {
     var oldDocument = global.document
     global.document = {}
 
-    var props = {style: 'color: red'}
+    var props = {dataStyle: 'color: red'}
     var root = el('ul', props, [
       el('li'),
       el('li', [el('span')]),
@@ -62,7 +62,7 @@ describe('Test Element', function () {
       style: {}
     })
     root.render()
-    spy0.should.have.calledWith('style', 'color: red')
+    spy0.should.have.calledWith('dataStyle', 'color: red')
     spy1.should.have.callCount(4)
     spy2.should.have.been.calledWith('Fuck')
     spy3.should.have.callCount(4)
@@ -104,5 +104,34 @@ describe('Test Element', function () {
     }
 
     dfs(root, index)
+  })
+
+  it('Setting value of input and textarea', function () {
+    var input = el('div', {}, [
+      el('input', {value: 'string value'}, null),
+      el('textarea', {value: 'string value2'}, null)
+    ])
+    var dom = input.render()
+
+    var spy1 = sinon.spy()
+    var spy2 = sinon.spy()
+
+    dom.childNodes[0].setAttribute = spy1
+    dom.childNodes[0].value.should.be.equal('string value')
+    spy1.should.not.have.been.called
+
+    dom.childNodes[1].setAttribute = spy2
+    console.log(dom.childNodes[1].tagName)
+    spy2.should.not.have.been.called
+    dom.childNodes[1].value.should.be.equal('string value2')
+  })
+
+  it('Setting value of normal nodes', function () {
+    var input = el('div', {}, [
+      el('div', {value: 'string value'}, null)
+    ])
+    var dom = input.render()
+    chai.expect(dom.childNodes[0].value).to.be.undefined
+    dom.childNodes[0].getAttribute('value').should.be.equal('string value')
   })
 })

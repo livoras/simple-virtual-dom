@@ -33,4 +33,25 @@ describe('Test utilities', function () {
     var list3 = _.toArray()
     list3.should.be.deep.equal([])
   })
+
+  it('Setting dom element\'s attribute: normal attribute', function () {
+    var dom = document.createElement('div')
+    _.setAttr(dom, 'key', 'name')
+    _.setAttr(dom, 'input', 'name2')
+    dom.getAttribute('key').should.be.equal('name')
+    dom.getAttribute('input').should.be.equal('name2')
+  })
+
+  it('Setting dom element\'s attribute: style', function () {
+    var dom = document.createElement('div')
+    _.setAttr(dom, 'style', 'color: red')
+    dom.style.cssText.should.be.equal('color: red;')
+  })
+
+  it('Setting dom element\'s attribute: value of input & textarea', function () {
+    var dom = document.createElement('input')
+    _.setAttr(dom, 'value', 'color')
+    dom.value.should.be.equal('color')
+    chai.expect(dom.getAttribute('value')).to.be.null
+  })
 })

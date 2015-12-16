@@ -212,4 +212,20 @@ describe('Test patch fucntion', function () {
     patch(dom, patches)
     spy.should.have.been.called.once
   })
+
+  it('Patching input & textarea', function () {
+    var input = el('div', {}, [
+      el('input', {value: 'old string'}, null),
+      el('textarea', {value: 'old string'}, null)
+    ])
+    var dom = input.render()
+    var input2 = el('div', {}, [
+      el('input', {value: 'new string'}, null),
+      el('textarea', {value: 'new string'}, null)
+    ])
+    var patches = diff(input, input2)
+    patch(dom, patches)
+    dom.childNodes[0].value.should.be.equal('new string')
+    dom.childNodes[1].value.should.be.equal('new string')
+  })
 })
