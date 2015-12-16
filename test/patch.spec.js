@@ -228,4 +228,26 @@ describe('Test patch fucntion', function () {
     dom.childNodes[0].value.should.be.equal('new string')
     dom.childNodes[1].value.should.be.equal('new string')
   })
+
+  it('Test nodeValue for IE', function () {
+    var root = el('div', {}, [
+      el('input', {value: 'old string'}, null),
+      el('textarea', {value: 'old string'}, null),
+      'ok this is a string'
+    ])
+    var dom = root.render()
+    var text = dom.childNodes[2]
+    text.textContent.should.be.equal('ok this is a string')
+    delete text.textContent
+
+    var root2 = el('div', {}, [
+      el('input', {value: 'old string'}, null),
+      el('textarea', {value: 'old string'}, null),
+      'ok this is a string2'
+    ])
+
+    var patches = diff(root, root2)
+    patch(dom, patches)
+    text.nodeValue.should.be.equal('ok this is a string2')
+  })
 })

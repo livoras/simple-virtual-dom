@@ -54,4 +54,12 @@ describe('Test utilities', function () {
     dom.value.should.be.equal('color')
     chai.expect(dom.getAttribute('value')).to.be.null
   })
+
+  it('Setting dom element\'s attribute: no errors without tagName', function () {
+    var dom = document.createElement('input')
+    dom.tagName = void 666
+    _.setAttr(dom, 'value', 'color')
+    dom.value.should.be.equal('color')
+    chai.expect(dom.getAttribute('value')).to.be.null
+  })
 })
