@@ -7,7 +7,7 @@ simple-virtual-dom
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
-Simple virtual-dom algorithm. It has only ~400 lines of code, including very basic idea of virtual-dom algorithm.
+Simple virtual-dom algorithm. It has only ~500 lines of code, including very basic idea of virtual-dom algorithm.
 
 ## Install
 
