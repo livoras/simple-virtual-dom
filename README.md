@@ -58,7 +58,7 @@ You can checkout the full example in `example` folder.
 
 You should always provide a unique `key` property for each child in array(just like ReactJS's keyed children) for Virtual-DOM to reorder children instead of replacing the whole list when perform diff algorithm.
 
-```
+```javascript
 var root = el('ul', [
   el('li', {key: 'uid1'}, ['Jerry']),
   el('li', {key: 'uid2'}, ['Tomy']),
