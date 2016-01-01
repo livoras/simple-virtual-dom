@@ -56,6 +56,26 @@ patch(root, patches)
 
 You can checkout the full example in `example` folder.
 
+You should always provide a unique `key` property for each child in array(just like ReactJS's keyed children) for Virtual-DOM to reorder children instead of replacing the whole list when performing diff algorithm.
+
+```
+var root = el('ul', [
+  el('li', {key: 'uid1'}, ['Jerry']),
+  el('li', {key: 'uid2'}, ['Tomy']),
+  el('li', {key: 'uid3'}, ['Lucy']),
+])
+
+var newRoot = el('ul', [
+  el('li', {key: 'uid1'}, ['Jerry']),
+  el('li', {key: 'uid2'}, ['Tomy']),
+  el('li', {key: 'uid4'}, ['Lily']),
+  el('li', {key: 'uid3'}, ['Lucy']),
+])
+
+// ensure `patches` is minimum
+var patches = diff(root, newRoot)
+```
+
 ## License
 
 The MIT License (MIT)
