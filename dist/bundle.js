@@ -159,9 +159,7 @@ Element.prototype.render = function () {
     _.setAttr(el, propName, propValue)
   }
 
-  var children = this.children || []
-
-  _.each(children, function (child) {
+  _.each(this.children, function (child) {
     var childEl = (child instanceof Element)
       ? child.render()
       : document.createTextNode(child)
@@ -207,7 +205,10 @@ function applyPatches (node, currentPatches) {
   _.each(currentPatches, function (currentPatch) {
     switch (currentPatch.type) {
       case REPLACE:
-        node.parentNode.replaceChild(currentPatch.node.render(), node)
+        var newNode = (typeof currentPatch.node === "string")
+          ? document.createTextNode(currentPatch.node)
+          : currentPatch.node.render()
+        node.parentNode.replaceChild(newNode, node)
         break
       case REORDER:
         reorderChildren(node, currentPatch.moves)
