@@ -4,9 +4,9 @@
   "description": "Basic virtual dom algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "./test.sh",
+    "test": "sh ./test.sh",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "dev": "nodemon --watch lib --watch test --watch index.js --exec ./test.sh",
+    "dev": "nodemon --watch lib --watch test --watch index.js --exec npm test",
     "build": "browserify simple-virtual-dom.js -o dist/bundle.js"
   },
   "repository": {

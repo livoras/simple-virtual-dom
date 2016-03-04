@@ -121,7 +121,6 @@ describe('Test Element', function () {
     spy1.should.not.have.been.called
 
     dom.childNodes[1].setAttribute = spy2
-    console.log(dom.childNodes[1].tagName)
     spy2.should.not.have.been.called
     dom.childNodes[1].value.should.be.equal('string value2')
   })
