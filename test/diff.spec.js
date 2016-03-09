@@ -125,4 +125,39 @@ describe('Test diff algorithm', function () {
     var patches = diff(root1, root2)
     patches[5].should.be.an.Object
   })
+
+  it('Skip element that has ignore tag when performing diff', function () {
+    var color = 'blue'
+    var count = 0
+    var root1 = el('div', {'id': 'container', 'ignore': 'true'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li')])
+    ])
+
+    var root2 = el('div', {'id': 'container', 'ignore': 'true'}, [
+      el('h1', {style: 'color: ' + color}, ['simple virtal domk']),
+      el('p', ['the count is :' + count + 'k']),
+      el('ul', [el('li'), el('li'), el('li')])
+    ])
+
+    var patches = diff(root1, root2)
+    patches.should.be.deep.equal({})
+
+    root1 = el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color, 'ignore': 'true'}, ['simple virtal dom']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li')])
+    ])
+
+    root2 = el('div', {'id': 'container'}, [
+      el('h1', {style: 'color: ' + color, 'ignore': 'true'}, ['simple virtal dom 2']),
+      el('p', ['the count is :' + count]),
+      el('ul', [el('li'), el('li')])
+    ])
+
+    patches = diff(root1, root2)
+    chai.expect(patches[1]).to.be.equal(undefined)
+    chai.expect(patches[5]).to.be.an('array')
+  })
 })
