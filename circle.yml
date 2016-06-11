@@ -1,9 +1,6 @@
 machine:
   node:
     version: 4
-dependencies:
-  pre:
-    - npm install -g istanbul standard casperjs
 test:
   override:
     - standard && istanbul cover ./node_modules/mocha/bin/_mocha ./test/*.spec.js -- -R spec && cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js
