@@ -133,4 +133,15 @@ describe('Test Element', function () {
     chai.expect(dom.childNodes[0].value).to.be.undefined
     dom.childNodes[0].getAttribute('value').should.be.equal('string value')
   })
+
+  it('Passing JSX-style children', function () {
+    var input = el('div', {},
+      el('div', {value: 'string value'}, null),
+      el('div', {value: 'another'}, null)
+    )
+    var dom = input.render()
+    chai.expect(dom.childNodes.length).to.be.equal(2)
+    dom.childNodes[0].getAttribute('value').should.be.equal('string value')
+    dom.childNodes[1].getAttribute('value').should.be.equal('another')
+  })
 })
