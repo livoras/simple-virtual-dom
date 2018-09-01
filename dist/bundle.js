@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 exports.el = require('./lib/element')
 exports.diff = require('./lib/diff')
 exports.patch = require('./lib/patch')
@@ -18,27 +18,35 @@ function diff (oldTree, newTree) {
 function dfsWalk (oldNode, newNode, index, patches) {
   var currentPatch = []
 
-  // node is removed
+  // Node is removed.
   if (newNode === null) {
-    // will be removed when perform reordering, so has no needs to do anthings in here
-  // textNode content replacing
+    // Real DOM node will be removed when perform reordering, so has no needs to do anthings in here
+  // TextNode content replacing
   } else if (_.isString(oldNode) && _.isString(newNode)) {
     if (newNode !== oldNode) {
       currentPatch.push({ type: patch.TEXT, content: newNode })
     }
-  // nodes are the same, diff its props and children
+  // Nodes are the same, diff old node's props and children
   } else if (
       oldNode.tagName === newNode.tagName &&
       oldNode.key === newNode.key
     ) {
-    // diff props
+    // Diff props
     var propsPatches = diffProps(oldNode, newNode)
     if (propsPatches) {
       currentPatch.push({ type: patch.PROPS, props: propsPatches })
     }
-    // diff children
-    diffChildren(oldNode.children, newNode.children, index, patches, currentPatch)
-  // nodes are not the same, replace the old node with new node
+    // Diff children. If the node has a `ignore` property, do not diff children
+    if (!isIgnoreChildren(newNode)) {
+      diffChildren(
+        oldNode.children,
+        newNode.children,
+        index,
+        patches,
+        currentPatch
+      )
+    }
+  // Nodes are not the same, replace the old node with new node
   } else {
     currentPatch.push({ type: patch.REPLACE, node: newNode })
   }
@@ -77,7 +85,7 @@ function diffProps (oldNode, newNode) {
   var key, value
   var propsPatches = {}
 
-  // find out different properties
+  // Find out different properties
   for (key in oldProps) {
     value = oldProps[key]
     if (newProps[key] !== value) {
@@ -86,7 +94,7 @@ function diffProps (oldNode, newNode) {
     }
   }
 
-  // find out new property
+  // Find out new property
   for (key in newProps) {
     value = newProps[key]
     if (!oldProps.hasOwnProperty(key)) {
@@ -95,12 +103,16 @@ function diffProps (oldNode, newNode) {
     }
   }
 
-  // if properties all are identical
+  // If properties all are identical
   if (count === 0) {
     return null
   }
 
   return propsPatches
+}
+
+function isIgnoreChildren (node) {
+  return (node.props && node.props.hasOwnProperty('ignore'))
 }
 
 module.exports = diff
@@ -118,6 +130,9 @@ var _ = require('./util')
  */
 function Element (tagName, props, children) {
   if (!(this instanceof Element)) {
+    if (!_.isArray(children) && children != null) {
+      children = _.slice(arguments, 2).filter(_.truthy)
+    }
     return new Element(tagName, props, children)
   }
 
@@ -263,7 +278,7 @@ function reorderChildren (node, moves) {
       staticNodeList.splice(index, 1)
     } else if (move.type === 1) { // insert item
       var insertNode = maps[move.item.key]
-        ? maps[move.item.key] // reuse old item
+        ? maps[move.item.key].cloneNode(true) // reuse old item
         : (typeof move.item === 'object')
             ? move.item.render()
             : document.createTextNode(move.item)
@@ -289,6 +304,14 @@ _.type = function (obj) {
 
 _.isArray = function isArray (list) {
   return _.type(list) === 'Array'
+}
+
+_.slice = function slice (arrayLike, index) {
+  return Array.prototype.slice.call(arrayLike, index)
+}
+
+_.truthy = function truthy (value) {
+  return !!value
 }
 
 _.isString = function isString (list) {

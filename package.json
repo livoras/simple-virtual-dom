@@ -26,12 +26,14 @@
     "list-diff2": "0.1.4"
   },
   "devDependencies": {
+    "browserify": "16.2.2",
     "chai": "3.4.1",
     "codecov.io": "0.1.6",
     "istanbul": "0.4.3",
     "jsdom": "7.0.2",
     "mocha": "2.3.4",
     "mocha-jsdom": "1.0.0",
+    "nodemon": "1.18.4",
     "sinon": "1.17.2",
     "sinon-chai": "2.8.0",
     "standard": "7.1.2"
