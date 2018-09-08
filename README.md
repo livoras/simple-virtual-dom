@@ -9,6 +9,8 @@ simple-virtual-dom
 
 Simple virtual-dom algorithm. It has only ~500 lines of code, including very basic idea of virtual-dom algorithm.
 
+**NOTE**: This is an experiment library, DO NOT use it in any serious productions.
+
 ## Install
 
 npm:
