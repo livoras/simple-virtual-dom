@@ -390,7 +390,7 @@ function diff (oldList, newList, key) {
   var itemKey
   var freeIndex = 0
 
-  // fist pass to check item in old list: if it's removed or not
+  // first pass to check item in old list: if it's removed or not
   while (i < oldList.length) {
     item = oldList[i]
     itemKey = getItemKey(item, key)
@@ -458,6 +458,14 @@ function diff (oldList, newList, key) {
 
     i++
   }
+
+  //if j is not remove to the end, remove all the rest item
+  var k = simulateList.length - j
+  while (j++ < simulateList.length) {
+    k--
+    remove(k + i)
+  }
+
 
   function remove (index) {
     var move = {index: index, type: 0}
